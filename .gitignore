@@ -23,3 +23,9 @@ coverage/
 *.log
 *.tmp
 *.temp
+
+# Specific local documents
+/KE_HOACH_BAI_THUC_HANH_5.md
+/RA_SOAT_TASK_BAI_THUC_HANH_4.md
+/Bai thuc hanh 4_Study case_Cong ty bao hiem_Cai dat 1.pdf
+/Bai thuc hanh 5_Study case_Cong ty bao hiem_Cai dat 2_phần 1.pdf
