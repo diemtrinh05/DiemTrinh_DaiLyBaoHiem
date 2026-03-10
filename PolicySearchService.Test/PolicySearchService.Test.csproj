@@ -17,11 +17,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\PolicySearchService.Api\PolicySearchService.Api.csproj" />
-    <ProjectReference Include="..\PolicySearchService\PolicySearchService.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Using Include="Xunit" />
   </ItemGroup>
 
