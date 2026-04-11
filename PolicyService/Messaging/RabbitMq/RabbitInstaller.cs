@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using EasyNetQ;
 using EasyNetQ.Topology;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,7 +15,6 @@ public static class RabbitInstaller
         var bus = RabbitHutch.CreateBus(connectionStr);
         bus.Advanced.ExchangeDeclare("lab-dotnet-micro", ExchangeType.Topic);
         services.AddSingleton(bus);
-        
         services.AddScoped<IEventPublisher, OutboxEventPublisher>();
         services.AddSingleton<Outbox.Outbox>();
         services.AddHostedService<OutboxSendingService>();

@@ -76,7 +76,7 @@ public class Outbox
     {
         var deserializedMsg = msg.RecreateMessage();
         var messageKey = deserializedMsg.GetType().Name.ToLower();
-        await busClient.Advanced.PublishAsync(exchange, messageKey, true, new  RabbitMessage(msg));
+        await busClient.Advanced.PublishAsync(exchange, messageKey, true, new RabbitMessage(msg));
     }
 }
 
