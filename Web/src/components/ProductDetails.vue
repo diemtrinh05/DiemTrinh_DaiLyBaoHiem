@@ -109,6 +109,7 @@
 
 <script>
     import {HTTP} from "./http/ApiClient";
+    import {POLICY_HTTP} from "./http/PolicyClient";
 
     export default {
         name: 'ProductDetails',
@@ -170,7 +171,7 @@
                 return request;
             },
             calculatePrice: function () {
-                HTTP.post('offers', this.createRequest()).then(response => {
+                POLICY_HTTP.post('offer', this.createRequest()).then(response => {
                     this.mode = 'VIEW';
                     this.price.amountToPay = response.data.totalPrice;
                     this.offerNumber = response.data.offerNumber;

@@ -25,9 +25,17 @@ public class Startup
     public void ConfigureServices(IServiceCollection services)
     {
         services.AddDiscoveryClient(Configuration);
+        services.AddCors(options =>
+            options.AddPolicy("WebClient", builder =>
+                builder
+                    .WithOrigins("http://localhost:8080", "http://127.0.0.1:8080")
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .AllowCredentials()));
         services.AddMvc()
             .AddNewtonsoftJson();
         services.AddMediatR(opts => opts.RegisterServicesFromAssemblyContaining<Startup>());
+        services.AddHttpClient();
         services.AddElasticSearch(Configuration.GetConnectionString("ElasticSearchConnection"));
         services.AddRabbitListeners();
         services.AddSwaggerGen();
@@ -48,7 +56,9 @@ public class Startup
             app.UseSwaggerUI();
         }
         
-        app.UseHttpsRedirection();
+        if (!env.IsDevelopment())
+            app.UseHttpsRedirection();
+        app.UseCors("WebClient");
         app.UseRabbitListeners(new List<Type> { typeof(PolicyCreated) });
         app.UseEndpoints(endpoints => endpoints.MapControllers());
     }

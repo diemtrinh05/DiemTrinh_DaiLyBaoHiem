@@ -18,7 +18,7 @@
 </template>
 
 <script>
-    import {HTTP} from "./http/ApiClient";
+    import {POLICY_SEARCH_HTTP} from "./http/PolicySearchClient";
     const AND = "%20AND%20";
 
     export default {
@@ -53,8 +53,8 @@
                 this.runSearch(this.formatQueryString(queryString));
             },
             runSearch(queryString = '') {
-                HTTP.get('PolicySearch' + queryString).then(response => {
-                    this.policies = response.data.policies;
+                POLICY_SEARCH_HTTP.get('PolicySearch' + queryString).then(response => {
+                    this.policies = Array.isArray(response.data) ? response.data : (response.data && response.data.policies ? response.data.policies : []);
                 });
             },
             addCriteria(queryString, criteria) {

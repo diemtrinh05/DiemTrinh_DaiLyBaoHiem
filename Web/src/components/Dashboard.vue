@@ -73,6 +73,7 @@
 
 <script>
 import { HTTP } from "./http/ApiClient";
+import { DASHBOARD_HTTP } from "./http/DashboardClient";
 import SalesAgents from "./SalesAgents";
 import SalesTrendsLines from "./SalesTrendsLines";
 import SalesDistribution from "./SalesDistribution";
@@ -127,7 +128,7 @@ export default {
   },
   methods: {
     fetchTotalSales() {
-      HTTP
+      DASHBOARD_HTTP
         .post("dashboard/total-sales", this.setupRequest({}))
         .then(response => {
           this.totalAmount = response.data.total.premiumAmount;
@@ -143,7 +144,7 @@ export default {
       });
     },
     fetchAgentsSales() {
-      HTTP
+      DASHBOARD_HTTP
         .post("dashboard/agents-sales", this.setupRequest({}))
         .then(response => {
           var amounts = {};
@@ -157,7 +158,7 @@ export default {
       });
     },
     fetchSalesTrends() {
-      HTTP
+      DASHBOARD_HTTP
         .post("dashboard/sales-trends", this.setupRequest({}))
         .then(response => {
           this.salesTrends = response.data.periodsSales;

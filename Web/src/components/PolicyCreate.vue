@@ -86,7 +86,7 @@
 </template>
 
 <script>
-    import {HTTP} from "./http/ApiClient";
+    import {POLICY_HTTP} from "./http/PolicyClient";
 
     export default {
         name: "PolicyCreate",
@@ -123,7 +123,7 @@
                     policyHolderAddress: this.policyAddress
                 };
 
-                HTTP.post('policies', request).then(response => {
+                POLICY_HTTP.post('policy', request).then(response => {
                     this.$router.push({name: 'policyDetails', params: {policyNumber: response.data.policyNumber}});
                 })
             }

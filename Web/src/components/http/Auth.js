@@ -13,9 +13,11 @@ export default {
                 (response) => {
                     localStorage.setItem(TOKEN_KEY, response.body.token);
                     localStorage.setItem(DETAILS_KEY, JSON.stringify(response.body));
+                    return response.body;
                 },
                 (error) => {
                     console.info(error);
+                    return Promise.reject(error);
                 }
             )
     },

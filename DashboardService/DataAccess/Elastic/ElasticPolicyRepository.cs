@@ -2,16 +2,19 @@ using System;
 using System.Linq;
 using DashboardService.Domain;
 using Elastic.Clients.Elasticsearch;
+using Microsoft.Extensions.Logging;
 
 namespace DashboardService.DataAccess.Elastic;
 
 public class ElasticPolicyRepository : IPolicyRepository
 {
     private readonly ElasticsearchClient elasticClient;
+    private readonly ILogger<ElasticPolicyRepository> logger;
 
-    public ElasticPolicyRepository(ElasticsearchClient elasticClient)
+    public ElasticPolicyRepository(ElasticsearchClient elasticClient, ILogger<ElasticPolicyRepository> logger)
     {
         this.elasticClient = elasticClient;
+        this.logger = logger;
     }
 
     public void Save(PolicyDocument policy)
@@ -25,7 +28,11 @@ public class ElasticPolicyRepository : IPolicyRepository
                 .Refresh(Refresh.True)
         );
 
-        if (!response.IsValidResponse) throw new ApplicationException("Failed to index a policy document");
+        if (!response.IsValidResponse)
+        {
+            logger.LogError("Failed to index policy document {PolicyNumber} into Elasticsearch. Response: {Response}",
+                policy.Number, response.ElasticsearchServerError?.ToString() ?? response.DebugInformation);
+        }
     }
 
     public PolicyDocument FindByNumber(string policyNumber)

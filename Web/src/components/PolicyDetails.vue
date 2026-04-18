@@ -34,7 +34,7 @@
 </template>
 
 <script>
-    import {HTTP} from "./http/ApiClient";
+    import {POLICY_HTTP} from "./http/PolicyClient";
 
     export default {
         name: "PolicyDetails",
@@ -48,7 +48,7 @@
             }
         },
         created: function () {
-            HTTP.get("policies/" + this.policyNumber).then(response => {
+            POLICY_HTTP.get("policy/" + this.policyNumber).then(response => {
                 this.policy = response.data.policy;
             })
         },
@@ -62,7 +62,7 @@
         },
         methods: {
             documents: function () {
-                HTTP.get("documents/" + this.policyNumber).then(response => {
+                POLICY_HTTP.get("documents/" + this.policyNumber).then(response => {
                     this.documentsList = response.data.documents;
                     this.documentsList.forEach((doc) => {
                         const data = doc.content;

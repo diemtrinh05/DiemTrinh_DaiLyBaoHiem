@@ -27,6 +27,7 @@
 
                 <b-button type="button" v-on:click="login()" variant="primary">Login</b-button>
             </b-form>
+            <p v-if="error" class="text-danger mt-3">{{ error }}</p>
 
         </div>
         <div v-else>
@@ -55,12 +56,15 @@
         },
         methods: {
             login() {
+                this.error = '';
                 const credentials = {
                     login: this.credentials.username,
                     password: this.credentials.password
                 };
                 auth.login(this, credentials).then(() => {
                     window.location.href = '/';
+                }).catch(() => {
+                    this.error = 'Đăng nhập thất bại. Kiểm tra lại tài khoản, mật khẩu hoặc URL service.';
                 });
             },
             logout() {

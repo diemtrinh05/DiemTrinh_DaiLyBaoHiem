@@ -2,6 +2,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
 namespace PolicyService.Messaging.RabbitMq.Outbox;
 
@@ -9,11 +10,13 @@ public class OutboxSendingService : IHostedService
 {
     private static readonly SemaphoreSlim semaphore = new SemaphoreSlim(1);
     private readonly Outbox outbox;
+    private readonly ILogger<OutboxSendingService> logger;
     private Timer timer;
 
-    public OutboxSendingService(Outbox outbox)
+    public OutboxSendingService(Outbox outbox, ILogger<OutboxSendingService> logger)
     {
         this.outbox = outbox;
+        this.logger = logger;
     }
 
 
@@ -44,6 +47,10 @@ public class OutboxSendingService : IHostedService
         try
         {
             outbox.PushPendingMessages().Wait();
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "Outbox background push failed.");
         }
         finally
         {

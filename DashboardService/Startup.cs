@@ -27,6 +27,13 @@ public class Startup
     public void ConfigureServices(IServiceCollection services)
     {
         services.AddDiscoveryClient(Configuration);
+        services.AddCors(options =>
+            options.AddPolicy("WebClient", builder =>
+                builder
+                    .WithOrigins("http://localhost:8080", "http://127.0.0.1:8080")
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .AllowCredentials()));
         services.AddMvc()
             .AddNewtonsoftJson();
         services.AddMediatR(opts => opts.RegisterServicesFromAssemblyContaining<Startup>());
@@ -48,9 +55,11 @@ public class Startup
             app.UseSwaggerUI();
         }
 
-        app.UseHttpsRedirection();
+        if (!env.IsDevelopment())
+            app.UseHttpsRedirection();
 
         app.UseRouting();
+        app.UseCors("WebClient");
 
         app.UseAuthorization();
 
